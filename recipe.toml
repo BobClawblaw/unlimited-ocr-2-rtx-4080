@@ -1,0 +1,35 @@
+# The recipe's defaults. `local.toml` next to this file overrides them for one PC (copy local.example.toml); an
+# environment variable of the same name in upper case overrides both (set PORT=8897 before python -m win up).
+
+[model]
+# Baidu's release as published (bf16, 6.3 GiB; nothing is converted):
+# hf download baidu/Unlimited-OCR-2 --revision <model_revision> --local-dir <model_dir>
+model_repo = "baidu/Unlimited-OCR-2"
+model_revision = "0480966938291445591f69f08a13b041c073a96a"
+served_name = "Unlimited-OCR-2"
+model_dir = "~/models/Unlimited-OCR-2"
+
+[engine]
+# TensorFold's native CUDA engine with the unlimited-ocr family: a worktree of tensorfold_src at tensorfold_sha,
+# built by `python -m win build` under tf_cache; `binary` names a built tensorfold-native.exe instead
+tensorfold_src = "~/src/TensorFold"      # a clone holding tensorfold_sha
+tensorfold_sha = "115748f2c43e0fac69ab5882e97fc191070b784b"                  # branch unlimited-ocr-cuda (engine.py fetches it)
+zig = "~/tools/zig-x86_64-windows-0.17.0/zig.exe"   # Zig 0.17.0
+nvcc = "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.3/bin/nvcc.exe"
+vcvars = "C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Auxiliary/Build/vcvars64.bat"
+sm = "89"                                # the RTX 4080's
+binary = ""
+
+[local]
+host = "127.0.0.1"
+port = 8896
+tf_cache = "~/.cache/unlimited-ocr-2"
+
+[serve]
+context = 98304           # every page's image tokens, the instruction and the reply (16 GB: see the README)
+max_tokens = 98304        # a reply's default ceiling (the page guard ends it after the last page)
+max_pages = 48            # pages (images) a request may hold
+page_tokens = 0           # image tokens a request may hold (0: every page may take gundam's widest grid)
+keep_warm = 86400
+api_key = ""
+extra_args = ""

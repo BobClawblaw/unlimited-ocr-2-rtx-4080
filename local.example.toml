@@ -1,0 +1,12 @@
+# Copy to local.toml (git-ignored) and change what differs on this PC.
+[model]
+model_dir = "~/models/Unlimited-OCR-2"
+
+[engine]
+tensorfold_src = "~/src/TensorFold"      # a clone holding tensorfold_sha
+# tensorfold_sha = "..."                 # another engine commit than recipe.toml's pin
+# binary = "C:/path/to/tensorfold-native.exe"
+
+[local]
+host = "127.0.0.1"
+port = 8896
