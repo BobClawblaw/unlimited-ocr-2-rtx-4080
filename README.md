@@ -76,7 +76,8 @@ A smaller `context` shrinks the caches. `python -m win up` checks that the card 
 
 ## The engine
 
-The `unlimited-ocr` family is not in TensorFold's main yet. Its CUDA port lives on the branch `unlimited-ocr-cuda` of
+The `unlimited-ocr` family is not in TensorFold's main yet: the Metal family is ashhart/TensorFold#2074 and its CUDA
+port is #2077 (draft, stacked on it). This recipe pins the CUDA port on the branch `unlimited-ocr-cuda` of
 github.com/BobClawblaw/TensorFold, commit `5be83bba7`: the Metal family's 14 commits rebased on TensorFold main
 `2c8422a0c` (2026-11-03), plus two commits for CUDA (the port, then the router's long-context speedup):
 - `zig/kernels/cuda/uocr.cu`: the Metal family's 28 own steps, op for op, rounded where the publisher's torch code rounds: SAM's windows, relative positions and attention, LayerNorm2d, GELUs, CLIP's embeddings, page2d rotary, the DASH router (block keys, page-aware ranking, entmax-1.5) and its block-sparse attention, the MoE gate and combine, the decode matvecs, experts picked on the GPU, and the greedy pick under the page guard;
