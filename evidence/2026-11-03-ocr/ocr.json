@@ -5,9 +5,9 @@
   ],
   "status": 200,
   "finish": "stop",
-  "ttft": 0.441,
-  "s": 1.266,
-  "decode_tps": 238.8,
+  "ttft": 0.435,
+  "s": 1.251,
+  "decode_tps": 241.4,
   "usage": {
    "prompt_tokens": 909,
    "completion_tokens": 198,
@@ -38,8 +38,8 @@
   "streams": {
    "n": 2,
    "identical": 2,
-   "seconds": 2.29,
-   "tokens_per_s": 172.9
+   "seconds": 2.25,
+   "tokens_per_s": 175.8
   }
  },
  "report-2": {
@@ -48,9 +48,9 @@
   ],
   "status": 200,
   "finish": "stop",
-  "ttft": 0.357,
-  "s": 0.94,
-  "decode_tps": 240.1,
+  "ttft": 0.367,
+  "s": 0.948,
+  "decode_tps": 241.0,
   "usage": {
    "prompt_tokens": 909,
    "completion_tokens": 141,
@@ -81,8 +81,8 @@
   "streams": {
    "n": 2,
    "identical": 2,
-   "seconds": 1.81,
-   "tokens_per_s": 155.8
+   "seconds": 1.8,
+   "tokens_per_s": 156.8
   }
  },
  "paper-1": {
@@ -92,8 +92,8 @@
   "status": 200,
   "finish": "stop",
   "ttft": 0.373,
-  "s": 2.654,
-  "decode_tps": 237.6,
+  "s": 2.609,
+  "decode_tps": 242.4,
   "usage": {
    "prompt_tokens": 909,
    "completion_tokens": 543,
@@ -124,8 +124,8 @@
   "streams": {
    "n": 2,
    "identical": 2,
-   "seconds": 5.2,
-   "tokens_per_s": 208.8
+   "seconds": 5.1,
+   "tokens_per_s": 212.9
   }
  },
  "paper-3": {
@@ -134,9 +134,9 @@
   ],
   "status": 200,
   "finish": "stop",
-  "ttft": 0.36,
-  "s": 4.138,
-  "decode_tps": 237.7,
+  "ttft": 0.381,
+  "s": 4.056,
+  "decode_tps": 244.4,
   "usage": {
    "prompt_tokens": 909,
    "completion_tokens": 899,
@@ -167,8 +167,8 @@
   "streams": {
    "n": 2,
    "identical": 2,
-   "seconds": 8.18,
-   "tokens_per_s": 219.8
+   "seconds": 8.11,
+   "tokens_per_s": 221.7
   }
  },
  "paper-10": {
@@ -177,9 +177,9 @@
   ],
   "status": 200,
   "finish": "stop",
-  "ttft": 0.392,
-  "s": 8.668,
-  "decode_tps": 236.6,
+  "ttft": 0.364,
+  "s": 8.426,
+  "decode_tps": 242.9,
   "usage": {
    "prompt_tokens": 909,
    "completion_tokens": 1959,
@@ -210,8 +210,8 @@
   "streams": {
    "n": 2,
    "identical": 2,
-   "seconds": 17.25,
-   "tokens_per_s": 227.1
+   "seconds": 16.79,
+   "tokens_per_s": 233.3
   }
  },
  "document": {
@@ -224,9 +224,9 @@
   ],
   "status": 200,
   "finish": "stop",
-  "ttft": 1.725,
-  "s": 18.901,
-  "decode_tps": 219.3,
+  "ttft": 1.732,
+  "s": 17.365,
+  "decode_tps": 240.9,
   "usage": {
    "prompt_tokens": 4525,
    "completion_tokens": 3767,
@@ -257,8 +257,8 @@
   "streams": {
    "n": 2,
    "identical": 2,
-   "seconds": 37.35,
-   "tokens_per_s": 201.7
+   "seconds": 34.28,
+   "tokens_per_s": 219.8
   }
  }
 }

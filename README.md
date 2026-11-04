@@ -29,24 +29,39 @@ code too).
 ## Speed and agreement with the publisher's code
 
 Measured with the [recipe harness](https://github.com/BobClawblaw/recipe-harness)
-(`python -m harness run unlimited-ocr-2-4080 --plan ocr`) on engine commit `115748f2c`, 2026-11-03, on an RTX 4080
+(`python -m harness run unlimited-ocr-2-4080 --plan ocr`) on engine commit `5be83bba7`, 2026-11-03, on an RTX 4080
 SUPER (driver 610.88). The Windows desktop was on the same card. Evidence: `evidence/2026-11-03-ocr/`.
 
 | case | pages | prompt tokens | reply tokens | first token | decode | text vs reference | boxes moved |
 |---|---:|---:|---:|---:|---:|---|---:|
-| report-1 | 1 | 909 | 198 | 0.44 s | 238.8 tok/s | identical | 0 / 16 coordinates |
-| report-2 | 1 | 909 | 141 | 0.36 s | 240.1 tok/s | identical | 0 / 16 |
-| paper-1 | 1 | 909 | 543 | 0.37 s | 237.6 tok/s | identical | 2 / 44 (at most 5) |
-| paper-3 | 1 | 909 | 899 | 0.36 s | 237.7 tok/s | one near-tie (below) | 6 / 44 (3) |
-| paper-10 | 1 | 909 | 1,959 | 0.39 s | 236.6 tok/s | identical | 0 / 28 |
-| document (all five) | 5 | 4,525 | 3,767 | 1.73 s | 219.3 tok/s | identical | 5 / 136 (2) |
+| report-1 | 1 | 909 | 198 | 0.44 s | 241.4 tok/s | identical | 0 / 16 coordinates |
+| report-2 | 1 | 909 | 141 | 0.37 s | 241.0 tok/s | identical | 0 / 16 |
+| paper-1 | 1 | 909 | 543 | 0.37 s | 242.4 tok/s | identical | 2 / 44 (at most 5) |
+| paper-3 | 1 | 909 | 899 | 0.38 s | 244.4 tok/s | one near-tie (below) | 6 / 44 (3) |
+| paper-10 | 1 | 909 | 1,959 | 0.36 s | 242.9 tok/s | identical | 0 / 28 |
+| document (all five) | 5 | 4,525 | 3,767 | 1.73 s | 240.9 tok/s | identical | 5 / 136 (2) |
 
 - **The pages:** two synthetic report pages and three pages of the paper that ships in the release (title page, prose, tables), made by `ocr/pages.py`. The report pages use Windows' Arial, so they are not the M5 recipe's pixels.
 - **The reference:** the publisher's own `infer` (the release's `modeling_unlimitedocr.py`) on the CPU in torch bf16, greedy, gundam mode, written by `ocr/refs.py`. It ran on this PC with torch 2.13.0+cpu, transformers 4.52.1 and Python 3.11.
 - **Agreement:** the text without boxes matches the reference in five of six cases. In paper-3 alone, the reference wraps the citations in math (`$ [5, 6, 8, 20, 22, 26, 40] $`) and ours writes `[5, 6, 8, 20, 22, 26, 40]`. That is a near-tie in the publisher's own arithmetic: the M5 recipe's CPU reference (torch on Apple silicon) wrote `[5, 6, …]` there too, the same as ours. The same page inside the five-page document matches this reference exactly. Some layout-box coordinates (0-999 page grid) differ: 13 of 284, at most 5. They come from bf16 sums taken in another order (x86 CPU torch vs cuBLASLt and our kernels).
-- **Every case also checks:** the reply carries one `<PAGE>` marker per page, the same request repeated gives the same reply, and two requests at once both give it too (they run one after the other: 156-227 tok/s in all).
-- **A long document:** the release's 15-page paper three times over as one 45-page request (40,685 prompt tokens). The reply runs to its last page: 43,027 tokens with 45 page markers, the first token after 15.6 s, and 117.7 tok/s on average across the reply. Each page's three transcriptions agree to 0.99-1.00 similarity. Evidence: `evidence/2026-11-03-long/`.
+- **Every case also checks:** the reply carries one `<PAGE>` marker per page, the same request repeated gives the same reply, and two requests at once both give it too (they run one after the other: 157-233 tok/s in all).
+- **A long document:** the release's 15-page paper three times over as one 45-page request (40,685 prompt tokens). The reply runs to its last page: 43,027 tokens with 45 page markers, the first token after 15.3 s, and 222.2 tok/s on average across the reply (209 s in all). Each page's three transcriptions agree to 0.99-1.00 similarity. Evidence: `evidence/2026-11-03-long/`.
 - **Quality suite:** none was run. The harness's chat quality suites do not apply to an OCR model, and its own benchmarks (MPDocBench, MarathonDocBench, OmniDocBench) were not run.
+
+## Long prompts
+
+Decode stays close to its one-page speed deep into the context. The DASH router scores every 32-key block of the
+context for each decoded token, then takes the top 16. That part grows with the context; the attention itself reads
+at most 512 keys. A 256-thread block now scores a token's blocks, and its warps take the top 16 by shuffles. The
+picks are the same bits as before, so the replies are byte-identical. The measurement is 1,500 decoded tokens after
+the paper repeated (`ocr/longbench.py`, `evidence/2026-11-03-long/`):
+
+| prompt tokens | decode, engine `115748f2c` | decode, `5be83bba7` |
+|---:|---:|---:|
+| 909 (one page) | 238.8 tok/s | 242.4 tok/s |
+| 13,565 | 192.4 tok/s | 234.7 tok/s |
+| 40,685 | 140.1 tok/s | 223.8 tok/s |
+| 40,685, its whole 43,027-token reply | 117.7 tok/s | 222.2 tok/s |
 
 ## Memory
 
@@ -62,8 +77,8 @@ A smaller `context` shrinks the caches. `python -m win up` checks that the card 
 ## The engine
 
 The `unlimited-ocr` family is not in TensorFold's main yet. Its CUDA port lives on the branch `unlimited-ocr-cuda` of
-github.com/BobClawblaw/TensorFold, commit `115748f2c`: the Metal family's 14 commits rebased on TensorFold main
-`2c8422a0c` (2026-11-03), plus one commit for CUDA:
+github.com/BobClawblaw/TensorFold, commit `5be83bba7`: the Metal family's 14 commits rebased on TensorFold main
+`2c8422a0c` (2026-11-03), plus two commits for CUDA (the port, then the router's long-context speedup):
 - `zig/kernels/cuda/uocr.cu`: the Metal family's 28 own steps, op for op, rounded where the publisher's torch code rounds: SAM's windows, relative positions and attention, LayerNorm2d, GELUs, CLIP's embeddings, page2d rotary, the DASH router (block keys, page-aware ranking, entmax-1.5) and its block-sparse attention, the MoE gate and combine, the decode matvecs, experts picked on the GPU, and the greedy pick under the page guard;
 - the projections on cuBLASLt (TensorFold's `cuda/vit.zig` Gemms), the bias in its epilogue;
 - `families/uocr/cuda_*.zig` and `native/uocr_cuda.zig`: the weights in one device buffer, the encoder, the decoder and the served model, mirroring the Metal host. The Metal family's host files (geometry, page preprocessing, prompt positions, the page guard) are shared.

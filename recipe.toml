@@ -13,7 +13,7 @@ model_dir = "~/models/Unlimited-OCR-2"
 # TensorFold's native CUDA engine with the unlimited-ocr family: a worktree of tensorfold_src at tensorfold_sha,
 # built by `python -m win build` under tf_cache; `binary` names a built tensorfold-native.exe instead
 tensorfold_src = "~/src/TensorFold"      # a clone holding tensorfold_sha
-tensorfold_sha = "115748f2c43e0fac69ab5882e97fc191070b784b"                  # branch unlimited-ocr-cuda (engine.py fetches it)
+tensorfold_sha = "5be83bba797bd6fbbf1a8d41cf3669e6ef8b5301"   # branch unlimited-ocr-cuda (engine.py fetches it)
 zig = "~/tools/zig-x86_64-windows-0.17.0/zig.exe"   # Zig 0.17.0
 nvcc = "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v13.3/bin/nvcc.exe"
 vcvars = "C:/Program Files (x86)/Microsoft Visual Studio/18/BuildTools/VC/Auxiliary/Build/vcvars64.bat"

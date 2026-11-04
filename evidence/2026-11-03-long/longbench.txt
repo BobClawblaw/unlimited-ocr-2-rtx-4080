@@ -1,0 +1,9 @@
+python ocr/longbench.py http://127.0.0.1:8896 COPIES 1500: 1,500 decoded tokens after the paper COPIES times over.
+Every reply below is the same text (sha 35066a40ca7c).
+
+engine     prompt tokens   decode
+115748f2c  13,565          192.4 tok/s
+115748f2c  40,685          140.1 tok/s
+5be83bba7  13,565          234.7 tok/s
+5be83bba7  40,685          223.8 tok/s
+5be83bba7  909 (report-1)  242.4 tok/s (ocr/check.py)

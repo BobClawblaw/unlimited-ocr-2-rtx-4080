@@ -1,19 +1,58 @@
 {
   "what": "the release's paper (Unlimited-OCR-2.pdf, 15 pages at 150 dpi) three times over as one 45-page request, greedy, default instruction",
-  "engine_commit": "115748f2c",
+  "engine_commit": "5be83bba7",
   "context": 98304,
   "pages": 45,
   "prompt_tokens": 40685,
   "completion_tokens": 43027,
   "page_marks": 45,
   "finish": "stop",
-  "ttft_s": 15.6,
-  "decode_tps_mean": 117.7,
-  "total_s": 381,
+  "ttft_s": 15.3,
+  "decode_tps_mean": 222.2,
+  "total_s": 209,
   "gpu_memory_used_mib": 15022,
   "copies_similarity_without_boxes": {
     "note": "each page's first transcription against its second and third copy (difflib ratio, boxes taken out)",
-    "second": [0.999, 0.994, 0.9978, 1.0, 1.0, 1.0, 0.99, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-    "third": [0.9995, 1.0, 1.0, 0.998, 1.0, 1.0, 0.9902, 1.0, 1.0, 0.9998, 1.0, 1.0, 1.0, 0.9998, 0.9998]
+    "second": [
+      0.999,
+      0.994,
+      0.9978,
+      1.0,
+      1.0,
+      1.0,
+      0.99,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "third": [
+      0.9995,
+      1.0,
+      1.0,
+      0.998,
+      1.0,
+      1.0,
+      0.9902,
+      1.0,
+      1.0,
+      0.9998,
+      1.0,
+      1.0,
+      1.0,
+      0.9998,
+      0.9998
+    ]
+  },
+  "before": {
+    "engine_commit": "115748f2c",
+    "ttft_s": 15.6,
+    "decode_tps_mean": 117.7,
+    "total_s": 381,
+    "note": "the same request on the engine before the router's speedup; the reply is byte-identical"
   }
 }
